@@ -16,7 +16,7 @@
 			<!-- utterances that exactly match "aut kullanılıyor" mean a goal kick -->
 			<item>
 				aut kullanılıyor
-				<tag>out.ballmov="goalkick"</tag>
+				<tag>out.ballmov="pass"</tag>
 			</item>
 			<!-- utterances that exactly match "pas veriliyor" mean a pass -->
 			<item>
@@ -136,17 +136,17 @@
 			<!-- a pass -->
 			<item>
 				pas veriyor
-				<tag>out.plmov="passing"</tag>
+				<tag>out.plmov="pass"</tag>
 			</item>
 			<!-- a shoot -->
 			<item>
 				şut çekiyor
-				<tag>out.plmov="shooting"</tag>
+				<tag>out.plmov="shoot"</tag>
 			</item>
 			<!-- an attack -->
 			<item>
 				atağa çıkıyor
-				<tag>out.plmov="attacking"</tag>
+				<tag>out.plmov="poketackle"</tag>
 			</item>
 			<!-- a poke tackle -->
 			<item>
@@ -168,7 +168,7 @@
 			<!-- a kick -->
 			<item>
 				oyunu başlatıyor
-				<tag>out.plmov="kick"</tag>
+				<tag>out.plmov="freekick"</tag>
 			</item>
 		</one-of>
 	</rule>
@@ -178,7 +178,7 @@
 		<one-of>
 			<item>
 				aut
-				<tag>out="goalkicking"</tag>
+				<tag>out="out"</tag>
 			</item>
 			<item>
 				faul vuruşunu
@@ -192,7 +192,7 @@
 		<one-of>
 			<item>
 				atlıyor
-				<tag>out="jumping"</tag> <!-- jumping -->
+				<tag>out="heading"</tag> <!-- jumping -->
 			</item>
 			<item>
 				<!-- if "müdahale ediyor", then poke tackle, if "kayarak müdahale ediyor", then sliding tackle -->
@@ -205,7 +205,7 @@
 			</item>
 			<item>
 				vuruyor
-				<tag>out="shooting"</tag> <!-- shoot -->
+				<tag>out="shoot"</tag> <!-- shoot -->
 			</item>
 		</one-of>
 	</rule>
@@ -216,12 +216,12 @@
 			<!-- clearing the ball -->
 			<item>
 				<ruleref uri="#clear" /> <!-- any verb that means clearing -->
-				<tag>out="clearing"</tag>
+				<tag>out="cleared"</tag>
 			</item>
 			<!-- catching the ball -->
 			<item>
 				yakalıyor
-				<tag>out="keeping"</tag>
+				<tag>out="cleared"</tag>
 			</item>
 		</one-of>
 	</rule>
