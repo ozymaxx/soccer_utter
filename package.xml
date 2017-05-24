@@ -1,0 +1,8 @@
+<package name="soccer_utter" version="0.1.0">
+	<run>
+		<command name="soccer_utter" class="iristk.app.soccer_utter.Soccer_utterSystem"/>
+	</run>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

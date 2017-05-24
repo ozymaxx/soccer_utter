@@ -1,0 +1,12 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+#motion-story {
+	-fx-background-color: rgb(245,121,0);
+	-fx-background-image: url("soccerfield.png");
+	-fx-background-repeat: stretch;
+	-fx-background-repeat: no-repeat;
+}
+
+#show-query {
+	-fx-background-color: rgb(25,118,47);
+	-fx-fill: rgb(255,255,255);
+}

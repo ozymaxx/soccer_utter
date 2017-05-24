@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="Soccer_utterFlow" package="iristk.app.soccer_utter" 
+	initial="Listen"	xmlns="iristk.flow" xmlns:p="iristk.flow.param" xmlns:dialog="iristk.flow.DialogFlow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="iristk.flow flow.xsd iristk.flow.DialogFlow DialogFlow.xsd">
+	
+	<state id="Listen">
+		<onentry>
+			<dialog:listen />
+		</onentry>
+		<onevent name="sense.user.speak">
+			<exec>System.out.println(event)</exec>
+			<reentry />
+		</onevent>
+		<onevent name="sense.user.silence">
+			<reentry />
+		</onevent>
+	</state>
+	
+</flow>

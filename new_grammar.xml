@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xml:lang="tr-TR" version="1.0"
+	xmlns="http://www.w3.org/2001/06/grammar" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3.org/2001/06/grammar http://www.w3.org/TR/speech-grammar/grammar.xsd" tag-format="semantics/1.0">
+
+	<!-- rules to recognize ball motion -->
+	<rule id="ballmovement" scope="public">
+		<tag>out.ballmov=""</tag>
+		<one-of>
+			<!-- utterances starting with "top" -->
+			<item>
+				top
+				<ruleref uri="#verb" /> <!-- the verb used with "top" determines the meaning -->
+				<tag>out.ballmov=rules.verb</tag>
+			</item>
+			<!-- utterances that exactly match "aut kullanılıyor" mean a goal kick -->
+			<item>
+				aut kullanılıyor
+				<tag>out.ballmov="goalkick"</tag>
+			</item>
+			<!-- utterances that exactly match "pas veriliyor" mean a pass -->
+			<item>
+				pas veriliyor
+				<tag>out.ballmov="pass"</tag>
+			</item>
+			<!-- utterances that exactly match "orta açılıyor" mean a pass -->
+			<item>
+				orta açılıyor
+				<tag>out.ballmov="pass"</tag>
+			</item>
+			<!-- utterances that exactly match "taç atılıyor" mean a throw_in-->
+			<item>
+				taç atılıyor
+				<tag>out.ballmov="throwin"</tag>
+			</item>
+			<!-- utterances that exactly match "degaj vuruluyor" mean a pass -->
+			<item>
+				degaj vuruluyor
+				<tag>out.ballmov="pass"</tag>
+			</item>
+			<!-- utterances starting with "gol" mean a goal -->
+			<item>
+				gol
+				<ruleref uri="#goalverb" /> <!-- the verb used with "gol" determines the meaning -->
+				<tag>out.ballmov="goal"</tag>
+			</item>
+		</one-of>
+	</rule>
+	
+	<!-- verbs that can be used with "gol". note that this verb does not affect the meaning -->
+	<rule id="goalverb">
+		<one-of>
+			<item>
+				oluyor
+			</item>
+			<item>
+				veriliyor
+			</item>
+		</one-of>
+	</rule>
+	
+	<!-- verbs that can be used with "top"  -->
+	<rule id="verb">
+		<one-of>
+			<item>
+				<ruleref uri="#active"></ruleref> <!-- active forms. verb determines the meaning -->
+				<tag>out=rules.active</tag>
+			</item>
+			<item>
+				<ruleref uri="#passive"></ruleref> <!-- passive forms verb determines the meaning -->
+				<tag>out=rules.passive</tag>
+			</item>
+		</one-of>
+	</rule>
+
+	<!-- active verbs that can be used with "top" -->
+	<rule id="active">
+		<one-of>
+			<item> <!-- to the post -->
+				direğe
+				<ruleref uri="#comingtopost" />
+				<tag>out="goalpost"</tag>
+			</item>
+			<item>
+				auta gidiyor
+				<tag>out="out"</tag> <!-- ball is going out of the field -->
+			</item>
+		</one-of>
+	</rule>
+
+	<!-- verbs possible to use with "direğe". verbs does not take effect on the meaning -->
+	<rule id="comingtopost">
+		<one-of>
+			<item>geliyor</item> <!-- coming to the post -->
+			<item>çarpıyor</item> <!-- hitting the post -->
+		</one-of>
+	</rule>
+
+	<!-- passive verbs that can be used with "top" -->
+	<rule id="passive">
+		<one-of>
+			<item>
+				dışarı çıkarılıyor
+				<tag>out="cleared"</tag> <!-- ball cleared -->
+			</item>
+			<item>
+				kurtarılıyor
+				<tag>out="cleared"</tag> <!-- ball kept -->
+			</item>
+			<item>
+				<tag>out="shot"</tag> <!-- a shot -->
+				<item repeat="0-1">
+					kafayla
+					<tag>out="heading"</tag> <!-- heading -->
+				</item>
+				vuruluyor
+			</item>
+		</one-of>
+	</rule>
+	
+	<!-- rules to recognize player motion -->
+	<rule id="playermovement" scope="public">
+		<tag>out.plmov=""</tag>
+		<one-of>
+			<item>
+				<item repeat="0-1">kornerden</item> <!-- "kornerden" is optional -->
+				topa
+				<ruleref uri="#toball" /> <!-- the verb used determines the meaning -->
+				<tag>out.plmov=rules.toball</tag>
+			</item>
+			<item>
+				topu
+				<ruleref uri="#withball" /> <!-- the verb used determines the meaning -->
+				<tag>out.plmov=rules.withball</tag>
+			</item>
+			<!-- a pass -->
+			<item>
+				pas veriyor
+				<tag>out.plmov="passing"</tag>
+			</item>
+			<!-- a shoot -->
+			<item>
+				şut çekiyor
+				<tag>out.plmov="shooting"</tag>
+			</item>
+			<!-- an attack -->
+			<item>
+				atağa çıkıyor
+				<tag>out.plmov="attacking"</tag>
+			</item>
+			<!-- a poke tackle -->
+			<item>
+				pres yapıyor
+				<tag>out.plmov="poketackle"</tag>
+			</item>
+			<!-- a sliding tackle -->
+			<item>
+				<item repeat="0-1">sertçe</item>
+				kayıyor
+				<tag>out.plmov="slidingtackle"</tag>
+			</item>
+			<!-- a kick -->
+			<item>
+				<ruleref uri="#foulorout" /> <!-- foul or goal kick -->
+				kullanıyor
+				<tag>out.plmov=rules.foulorout</tag>
+			</item>
+			<!-- a kick -->
+			<item>
+				oyunu başlatıyor
+				<tag>out.plmov="kick"</tag>
+			</item>
+		</one-of>
+	</rule>
+	
+	<!-- words that define a kick -->
+	<rule id="foulorout">
+		<one-of>
+			<item>
+				aut
+				<tag>out="goalkicking"</tag>
+			</item>
+			<item>
+				faul vuruşunu
+				<tag>out="freekick"</tag>
+			</item>
+		</one-of>
+	</rule>
+
+	<!-- actions that a player may take with/to the ball -->
+	<rule id="toball">
+		<one-of>
+			<item>
+				atlıyor
+				<tag>out="jumping"</tag> <!-- jumping -->
+			</item>
+			<item>
+				<!-- if "müdahale ediyor", then poke tackle, if "kayarak müdahale ediyor", then sliding tackle -->
+				<tag>out="poketackle"</tag>
+				<item repeat="0-1"> <!-- this item is optional but can change the meaning when used -->
+					kayarak
+					<tag>out="slidingtackle"</tag>
+				</item>
+				müdahale ediyor
+			</item>
+			<item>
+				vuruyor
+				<tag>out="shooting"</tag> <!-- shoot -->
+			</item>
+		</one-of>
+	</rule>
+
+	<!-- actions that can be done with a ball -->
+	<rule id="withball">
+		<one-of>
+			<!-- clearing the ball -->
+			<item>
+				<ruleref uri="#clear" /> <!-- any verb that means clearing -->
+				<tag>out="clearing"</tag>
+			</item>
+			<!-- catching the ball -->
+			<item>
+				yakalıyor
+				<tag>out="keeping"</tag>
+			</item>
+		</one-of>
+	</rule>
+	
+	<!-- any verb that means/implies clearing -->
+	<rule id="clear">
+		<one-of>
+			<item>kurtarıyor</item>
+			<item>dışarı çıkarıyor</item>
+		</one-of>
+	</rule>
+	
+	<!-- rules to indicate sides -->
+	<rule id="matchsides" scope="public">
+		<tag>out.team1="";out.team2=""</tag>
+		<one-of>
+			<item>
+				<ruleref uri="#team1" /> <!-- side 1 -->
+				<ruleref uri="#team2" /> <!-- side 2 -->
+				<!-- "we're at" -->
+				<one-of>
+					<item>maçı</item>
+					<item>maçındayız</item>
+				</one-of>
+				<!-- name the sides according to inputs -->
+				<tag>out.team1=rules.team1;out.team2=rules.team2</tag>
+			</item>
+		</one-of>
+	</rule>
+
+	<!-- side 1 - teams -->
+	<rule id="team1">
+		<item>
+			<ruleref uri="#teams" />
+			<tag>out=rules.teams</tag>
+		</item>
+	</rule>
+
+	<!-- side 2 - teams -->
+	<rule id="team2">
+		<item>
+			<ruleref uri="#teams" />
+			<tag>out=rules.teams</tag>
+		</item>
+	</rule>
+	
+	<!-- team list for both sides -->
+	<rule id="teams">
+		<one-of>
+			<item>Arjantin</item>
+			<item>Avusturya</item>
+			<item>Belçika</item>
+			<item>Brezilya</item>
+			<item>Bulgaristan</item>
+			<item>Kamerun</item>
+			<item>Şili</item>
+			<item>Kolombiya</item>
+			<item>Hırvatistan</item>
+			<item>İngiltere</item>
+			<item>Fransa</item>
+			<item>Almanya</item>
+			<item>Hollanda</item>
+			<item>İran</item>
+			<item>Jamaika</item>
+			<item>Japonya</item>
+			<item>Fas</item>
+			<item>Nijerya</item>
+			<item>Norveç</item>
+			<item>Paraguay</item>
+			<item>Romanya</item>
+			<item>Suudi Arabistan</item>
+			<item>İskoçya</item>
+			<item>Güney Afrika</item>
+			<item>Güney Kore</item>
+			<item>İspanya</item>
+			<item>Tunus</item>
+			<item>Amerika Birleşik Devletleri</item>
+			<item>Yugoslavya</item>
+		</one-of>
+	</rule>
+	
+	<!-- rules to indicate the time in minutes -->
+	<rule id="timeinfo" scope="public">
+		<tag>out.minute=0</tag>
+		<item>
+			dakika
+			<ruleref uri="#t" /> <!-- the match is in "t"th minute -->
+			<tag>out.minute=rules.t</tag>
+		</item>
+	</rule>
+
+	<!-- numbers from 1 to 90, to indicate the time in minutes -->
+	<rule id="t">
+		<one-of>
+			<item>bir<tag>out=1</tag></item>
+			<item>1<tag>out=1</tag></item>
+			<item>iki<tag>out=2</tag></item>
+			<item>2<tag>out=2</tag></item>
+			<item>üç<tag>out=3</tag></item>
+			<item>3<tag>out=3</tag></item>
+			<item>dört<tag>out=4</tag></item>
+			<item>4<tag>out=4</tag></item>
+			<item>beş<tag>out=5</tag></item>
+			<item>5<tag>out=5</tag></item>
+			<item>altı<tag>out=6</tag></item>
+			<item>6<tag>out=6</tag></item>
+			<item>yedi<tag>out=7</tag></item>
+			<item>7<tag>out=7</tag></item>
+			<item>sekiz<tag>out=8</tag></item>
+			<item>8<tag>out=8</tag></item>
+			<item>dokuz<tag>out=9</tag></item>
+			<item>9<tag>out=9</tag></item>
+			<item>on<tag>out=10</tag></item>
+			<item>10<tag>out=10</tag></item>
+			<item>on bir<tag>out=11</tag></item>
+			<item>11<tag>out=11</tag></item>
+			<item>on iki<tag>out=12</tag></item>
+			<item>12<tag>out=12</tag></item>
+			<item>on üç<tag>out=13</tag></item>
+			<item>13<tag>out=13</tag></item>
+			<item>on dört<tag>out=14</tag></item>
+			<item>14<tag>out=14</tag></item>
+			<item>on beş<tag>out=15</tag></item>
+			<item>15<tag>out=15</tag></item>
+			<item>on altı<tag>out=16</tag></item>
+			<item>16<tag>out=16</tag></item>
+			<item>on yedi<tag>out=17</tag></item>
+			<item>17<tag>out=17</tag></item>
+			<item>on sekiz<tag>out=18</tag></item>
+			<item>18<tag>out=18</tag></item>
+			<item>on dokuz<tag>out=19</tag></item>
+			<item>19<tag>out=19</tag></item>
+			<item>yirmi<tag>out=20</tag></item>
+			<item>20<tag>out=20</tag></item>
+			<item>yirmi bir<tag>out=21</tag></item>
+			<item>21<tag>out=21</tag></item>
+			<item>yirmi iki<tag>out=22</tag></item>
+			<item>22<tag>out=22</tag></item>
+			<item>yirmi üç<tag>out=23</tag></item>
+			<item>23<tag>out=23</tag></item>
+			<item>yirmi dört<tag>out=24</tag></item>
+			<item>24<tag>out=24</tag></item>
+			<item>yirmi beş<tag>out=25</tag></item>
+			<item>25<tag>out=25</tag></item>
+			<item>yirmi altı<tag>out=26</tag></item>
+			<item>26<tag>out=26</tag></item>
+			<item>yirmi yedi<tag>out=27</tag></item>
+			<item>27<tag>out=27</tag></item>
+			<item>yirmi sekiz<tag>out=28</tag></item>
+			<item>28<tag>out=28</tag></item>
+			<item>yirmi dokuz<tag>out=29</tag></item>
+			<item>29<tag>out=29</tag></item>
+			<item>otuz<tag>out=30</tag></item>
+			<item>30<tag>out=30</tag></item>
+			<item>otuz bir<tag>out=31</tag></item>
+			<item>31<tag>out=31</tag></item>
+			<item>otuz iki<tag>out=32</tag></item>
+			<item>32<tag>out=32</tag></item>
+			<item>otuz üç<tag>out=33</tag></item>
+			<item>33<tag>out=33</tag></item>
+			<item>otuz dört<tag>out=34</tag></item>
+			<item>34<tag>out=34</tag></item>
+			<item>otuz beş<tag>out=35</tag></item>
+			<item>35<tag>out=35</tag></item>
+			<item>otuz altı<tag>out=36</tag></item>
+			<item>36<tag>out=36</tag></item>
+			<item>otuz yedi<tag>out=37</tag></item>
+			<item>37<tag>out=37</tag></item>
+			<item>otuz sekiz<tag>out=38</tag></item>
+			<item>38<tag>out=38</tag></item>
+			<item>otuz dokuz<tag>out=39</tag></item>
+			<item>39<tag>out=39</tag></item>
+			<item>kırk<tag>out=40</tag></item>
+			<item>40<tag>out=40</tag></item>
+			<item>kırk bir<tag>out=41</tag></item>
+			<item>41<tag>out=41</tag></item>
+			<item>kırk iki<tag>out=42</tag></item>
+			<item>42<tag>out=42</tag></item>
+			<item>kırk üç<tag>out=43</tag></item>
+			<item>43<tag>out=43</tag></item>
+			<item>kırk dört<tag>out=44</tag></item>
+			<item>44<tag>out=44</tag></item>
+			<item>kırk beş<tag>out=45</tag></item>
+			<item>45<tag>out=45</tag></item>
+			<item>kırk altı<tag>out=46</tag></item>
+			<item>46<tag>out=46</tag></item>
+			<item>kırk yedi<tag>out=47</tag></item>
+			<item>47<tag>out=47</tag></item>
+			<item>kırk sekiz<tag>out=48</tag></item>
+			<item>48<tag>out=48</tag></item>
+			<item>kırk dokuz<tag>out=49</tag></item>
+			<item>49<tag>out=49</tag></item>
+			<item>elli<tag>out=50</tag></item>
+			<item>50<tag>out=50</tag></item>
+			<item>elli bir<tag>out=51</tag></item>
+			<item>51<tag>out=51</tag></item>
+			<item>elli iki<tag>out=52</tag></item>
+			<item>52<tag>out=52</tag></item>
+			<item>elli üç<tag>out=53</tag></item>
+			<item>53<tag>out=53</tag></item>
+			<item>elli dört<tag>out=54</tag></item>
+			<item>54<tag>out=54</tag></item>
+			<item>elli beş<tag>out=55</tag></item>
+			<item>55<tag>out=55</tag></item>
+			<item>elli altı<tag>out=56</tag></item>
+			<item>56<tag>out=56</tag></item>
+			<item>elli yedi<tag>out=57</tag></item>
+			<item>57<tag>out=57</tag></item>
+			<item>elli sekiz<tag>out=58</tag></item>
+			<item>58<tag>out=58</tag></item>
+			<item>elli dokuz<tag>out=59</tag></item>
+			<item>59<tag>out=59</tag></item>
+			<item>altmış<tag>out=60</tag></item>
+			<item>60<tag>out=60</tag></item>
+			<item>altmış bir<tag>out=61</tag></item>
+			<item>61<tag>out=61</tag></item>
+			<item>altmış iki<tag>out=62</tag></item>
+			<item>62<tag>out=62</tag></item>
+			<item>altmış üç<tag>out=63</tag></item>
+			<item>63<tag>out=63</tag></item>
+			<item>altmış dört<tag>out=64</tag></item>
+			<item>64<tag>out=64</tag></item>
+			<item>altmış beş<tag>out=65</tag></item>
+			<item>65<tag>out=65</tag></item>
+			<item>altmış altı<tag>out=66</tag></item>
+			<item>66<tag>out=66</tag></item>
+			<item>altmış yedi<tag>out=67</tag></item>
+			<item>67<tag>out=67</tag></item>
+			<item>altmış sekiz<tag>out=68</tag></item>
+			<item>68<tag>out=68</tag></item>
+			<item>altmış dokuz<tag>out=69</tag></item>
+			<item>69<tag>out=69</tag></item>
+			<item>yetmiş<tag>out=70</tag></item>
+			<item>70<tag>out=70</tag></item>
+			<item>yetmiş bir<tag>out=71</tag></item>
+			<item>71<tag>out=71</tag></item>
+			<item>yetmiş iki<tag>out=72</tag></item>
+			<item>72<tag>out=72</tag></item>
+			<item>yetmiş üç<tag>out=73</tag></item>
+			<item>73<tag>out=73</tag></item>
+			<item>yetmiş dört<tag>out=74</tag></item>
+			<item>74<tag>out=74</tag></item>
+			<item>yetmiş beş<tag>out=75</tag></item>
+			<item>75<tag>out=75</tag></item>
+			<item>yetmiş altı<tag>out=76</tag></item>
+			<item>76<tag>out=76</tag></item>
+			<item>yetmiş yedi<tag>out=77</tag></item>
+			<item>77<tag>out=77</tag></item>
+			<item>yetmiş sekiz<tag>out=78</tag></item>
+			<item>78<tag>out=78</tag></item>
+			<item>yetmiş dokuz<tag>out=79</tag></item>
+			<item>79<tag>out=79</tag></item>
+			<item>seksen<tag>out=80</tag></item>
+			<item>80<tag>out=80</tag></item>
+			<item>seksen bir<tag>out=81</tag></item>
+			<item>81<tag>out=81</tag></item>
+			<item>seksen iki<tag>out=82</tag></item>
+			<item>82<tag>out=82</tag></item>
+			<item>seksen üç<tag>out=83</tag></item>
+			<item>83<tag>out=83</tag></item>
+			<item>seksen dört<tag>out=84</tag></item>
+			<item>84<tag>out=84</tag></item>
+			<item>seksen beş<tag>out=85</tag></item>
+			<item>85<tag>out=85</tag></item>
+			<item>seksen altı<tag>out=86</tag></item>
+			<item>86<tag>out=86</tag></item>
+			<item>seksen yedi<tag>out=87</tag></item>
+			<item>87<tag>out=87</tag></item>
+			<item>seksen sekiz<tag>out=88</tag></item>
+			<item>88<tag>out=88</tag></item>
+			<item>seksen dokuz<tag>out=89</tag></item>
+			<item>89<tag>out=89</tag></item>
+			<item>doksan<tag>out=90</tag></item>
+			<item>90<tag>out=90</tag></item>
+		</one-of>
+	</rule>
+	
+	<!-- player marking -->
+	<rule id="playermarking" scope="public">
+		<tag>out.team="";out.pltype=""</tag>
+		<one-of>
+			<!-- by team name/color -->
+			<item>
+				<one-of>
+					<item><ruleref uri="#team" /><tag>out.team=rules.team</tag></item>
+					<item><ruleref uri="#coloradj" /><tag>out.team=rules.coloradj</tag></item>
+				</one-of>
+				<ruleref uri="#playertype" /> <!-- player type -->
+				<tag>out.pltype=rules.playertype</tag>
+			</item>
+			<!-- with "color" -->
+			<item>
+				<ruleref uri="#color" />
+				<ruleref uri="#playertype" /> <!-- player type -->
+				<tag>out.team=rules.color;out.pltype=rules.playertype</tag>
+			</item>
+			<!-- "color"s -->
+			<item>
+				<ruleref uri="#color" />
+				ler
+				<tag>out.team=rules.color</tag>
+			</item>
+		</one-of>
+	</rule>
+	
+	<!-- player type, an ordinary player, goalkeeper or defense -->
+	<rule id="playertype">
+		<one-of>
+			<item>oyuncu<tag>out="player"</tag></item> <!-- an ordinary player -->
+			<item>kaleci<tag>out="goalkeeper"</tag></item> <!-- a goalkeeper -->
+			<item>defans<tag>out="defense"</tag></item> <!-- a defense player -->
+		</one-of>
+	</rule>
+
+	<!-- colors possible -->
+	<rule id="color">
+		<one-of>
+			<item>kırmızı<tag>out="red"</tag></item>
+			<item>mavi<tag>out="blue"</tag></item>
+			<item>sarı<tag>out="yellow"</tag></item>
+			<item>yeşil<tag>out="green"</tag></item>
+			<item>beyaz<tag>out="white"</tag></item>
+			<item>turuncu<tag>out="orange"</tag></item>
+			<item>siyah<tag>out="black"</tag></item>
+		</one-of>
+	</rule>
+
+	<!-- with "color", where "color" refers the same colors as above -->
+	<rule id="coloradj">
+		<one-of>
+			<item>kırmızılı<tag>out="red"</tag></item>
+			<item>mavili<tag>out="blue"</tag></item>
+			<item>sarılı<tag>out="yellow"</tag></item>
+			<item>yeşilli<tag>out="green"</tag></item>
+			<item>beyazlı<tag>out="beyaz"</tag></item>
+			<item>turunculu<tag>out="orange"</tag></item>
+			<item>siyahlı<tag>out="black"</tag></item>
+		</one-of>
+	</rule>
+
+	<!-- from "team", where "team" refers the same teams as in "teams" list -->
+	<rule id="team">
+		<one-of>
+			<item>Arjantinli<tag>out="Arjantin"</tag></item>
+			<item>Avusturyalı<tag>out="Avusturya"</tag></item>
+			<item>Belçikalı<tag>out="Belçika"</tag></item>
+			<item>Brezilyalı<tag>out="Brezilya"</tag></item>
+			<item>Bulgaristanlı<tag>out="Bulgaristan"</tag></item>
+			<item>Kamerunlu<tag>out="Kamerun"</tag></item>
+			<item>Şilili<tag>out="Şili"</tag></item>
+			<item>Kolombiyalı<tag>out="Kolombiya"</tag></item>
+			<item>Hırvatistanlı<tag>out="Hırvatistan"</tag></item>
+			<item>İngiltereli<tag>out="İngiltere"</tag></item>
+			<item>Fransalı<tag>out="Fransa"</tag></item>
+			<item>Almanyalı<tag>out="Almanya"</tag></item>
+			<item>Hollandalı<tag>out="Hollanda"</tag></item>
+			<item>İranlı<tag>out="İran"</tag></item>
+			<item>Jamaikalı<tag>out="Jamaika"</tag></item>
+			<item>Japonyalı<tag>out="Japonya"</tag></item>
+			<item>Faslı<tag>out="Fas"</tag></item>
+			<item>Nijeryalı<tag>out="Nijerya"</tag></item>
+			<item>Norveçli<tag>out="Norveç"</tag></item>
+			<item>Paraguaylı<tag>out="Paraguay"</tag></item>
+			<item>Romanyalı<tag>out="Romanya"</tag></item>
+			<item>Suudi Arabistanlı<tag>out="Suudi Arabistan"</tag></item>
+			<item>İskoçyalı<tag>out="İskoçya"</tag></item>
+			<item>Güney Afrikalı<tag>out="Güney Afrika"</tag></item>
+			<item>Güney Koreli<tag>out="Güney Kore"</tag></item>
+			<item>İspanyalı<tag>out="İspanya"</tag></item>
+			<item>Tunuslu<tag>out="Tunus"</tag></item>
+			<item>Amerika Birleşik Devletlerinden<tag>out="Amerika Birleşik Devletleri"</tag></item>
+			<item>Yugoslavyalı<tag>out="Yugoslavya"</tag></item>
+		</one-of>
+	</rule>
+	
+</grammar>
