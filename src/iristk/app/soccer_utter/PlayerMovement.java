@@ -16,6 +16,18 @@ public class PlayerMovement extends Movement {
 		this.endPoint = endPoint;
 	}
 	
+	public Point getStartPoint() {
+		return startPoint;
+	}
+	
+	public Point getEndPoint() {
+		return endPoint;
+	}
+	
+	public int getTeamNo() {
+		return teamNo;
+	}
+	
 	@Override
 	public String toString() {
 		return "PLMOV("+teamNo+",("+startPoint.getX()+","+startPoint.getY()+")->("+endPoint.getX()+","+endPoint.getY()+"))";

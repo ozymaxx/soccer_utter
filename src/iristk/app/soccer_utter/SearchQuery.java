@@ -177,6 +177,8 @@ public class SearchQuery {
 	
 	public String toString() {
 		StringBuilder queryBuilder = new StringBuilder();
+		
+		/*
 		queryBuilder.append("(");
 		
 		if (team1Name != null) {
@@ -233,7 +235,127 @@ public class SearchQuery {
 			}
 		}
 		
-		queryBuilder.append(")");
+		queryBuilder.append(")");*/
+		
+		queryBuilder.append("{");
+		
+		StringBuilder condition;
+		int startTeamNo;
+		double startx,endx,starty,endy;
+		for (int i = 0; i < movements.size(); ++i) {
+			queryBuilder.append("{select:'*',");
+			condition = new StringBuilder();
+			
+			if (movements.get(i) instanceof BallMovement) {
+				condition.append("motion = \"ball\"");
+				startTeamNo = ((BallMovement) movements.get(i)).getStartTeamNo();
+				startx = ((BallMovement) movements.get(i)).getStartPoint().getX();
+				starty = ((BallMovement) movements.get(i)).getStartPoint().getY();
+				endx = ((BallMovement) movements.get(i)).getEndPoint().getX();
+				endy = ((BallMovement) movements.get(i)).getEndPoint().getY();
+			}
+			else {
+				condition.append("motion = \"player\"");
+				startTeamNo = ((PlayerMovement) movements.get(i)).getTeamNo();
+				startx = ((PlayerMovement) movements.get(i)).getStartPoint().getX();
+				starty = ((PlayerMovement) movements.get(i)).getStartPoint().getY();
+				endx = ((PlayerMovement) movements.get(i)).getEndPoint().getX();
+				endy = ((PlayerMovement) movements.get(i)).getEndPoint().getY();
+			}
+			
+			if (startTeamNo != -1) {
+				if (startTeamNo == 1) {
+					if (sidesCertain) {
+						condition.append(" && team = \"");
+						condition.append(team1Name+"\"");
+					}
+					else {
+						condition.append(" && team = \"");
+						condition.append(team1Name+"\" || ");
+						condition.append("team = \"");
+						condition.append(team2Name+"\"");
+					}
+				}
+				else {
+					if (sidesCertain) {
+						condition.append(" && team = \"");
+						condition.append(team2Name+"\"");
+					}
+					else {
+						condition.append(" && team = \"");
+						condition.append(team1Name+"\" || ");
+						condition.append("team = \"");
+						condition.append(team2Name+"\"");
+					}
+				}
+			}
+			
+			if (i == 0) {
+				if (time != -1) {
+					condition.append(" && time = ");
+					condition.append(time);
+				}
+			}
+			
+			if (sidesCertain) {
+				if (team1Name != null) {
+					condition.append(" && team1 = \"");
+					condition.append(team1Name+"\"");
+				}
+				
+				if (team2Name != null) {
+					condition.append(" && team2 = \"");
+					condition.append(team2Name+"\"");
+				}
+			}
+			else {
+				condition.append("&& (");
+				
+				if (team1Name != null) {
+					condition.append("team1 = \"");
+					condition.append(team1Name+"\"");
+				}
+				
+				if (team2Name != null) {
+					if (team1Name != null) {
+						condition.append(" && ");
+					}
+					
+					condition.append("team2 = \"");
+					condition.append(team2Name+"\"");
+				}
+				
+				condition.append(") || (");
+				
+				if (team1Name != null) {
+					condition.append("team2 = \"");
+					condition.append(team1Name+"\"");
+				}
+				
+				if (team2Name != null) {
+					if (team1Name != null) {
+						condition.append(" && ");
+					}
+					
+					condition.append("team1 = \"");
+					condition.append(team2Name+"\"");
+				}
+				
+				condition.append(")");
+			}
+			
+			queryBuilder.append("condition:'");
+			queryBuilder.append(condition);
+			queryBuilder.append("',");
+			queryBuilder.append("kNN-q:'<"+startx+","+starty+","+endx+","+endy+">,");
+			queryBuilder.append("top:10}");
+			
+			if (i < movements.size()-1) {
+				queryBuilder.append(",");
+			}
+		}
+		
+		queryBuilder.append("}");
 		
 		return queryBuilder.toString();
 	}

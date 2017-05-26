@@ -25,6 +25,18 @@ public class BallMovement extends Movement {
 		this.endTeamNo = endTeamNo;
 	}
 	
+	public Point getStartPoint() {
+		return startPoint;
+	}
+	
+	public Point getEndPoint() {
+		return endPoint;
+	}
+	
+	public int getStartTeamNo() {
+		return startTeamNo;
+	}
+	
 	@Override
 	public String toString() {
 		return "BALLMOV("+startTeamNo+",("+startPoint.getX()+","+startPoint.getY()+")->"+endTeamNo+",("+endPoint.getX()+","+endPoint.getY()+")"+")";

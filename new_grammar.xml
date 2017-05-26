@@ -31,7 +31,7 @@
 			<!-- utterances that exactly match "taç atılıyor" mean a throw_in-->
 			<item>
 				taç atılıyor
-				<tag>out.ballmov="throwin"</tag>
+				<tag>out.ballmov="throw_in"</tag>
 			</item>
 			<!-- utterances that exactly match "degaj vuruluyor" mean a pass -->
 			<item>
@@ -42,7 +42,7 @@
 			<item>
 				gol
 				<ruleref uri="#goalverb" /> <!-- the verb used with "gol" determines the meaning -->
-				<tag>out.ballmov="goal"</tag>
+				<tag>out.ballmov="shoot_goal"</tag>
 			</item>
 		</one-of>
 	</rule>
@@ -79,7 +79,7 @@
 			<item> <!-- to the post -->
 				direğe
 				<ruleref uri="#comingtopost" />
-				<tag>out="goalpost"</tag>
+				<tag>out="shoot_on_goalpost"</tag>
 			</item>
 			<item>
 				auta gidiyor
@@ -101,11 +101,11 @@
 		<one-of>
 			<item>
 				dışarı çıkarılıyor
-				<tag>out="cleared"</tag> <!-- ball cleared -->
+				<tag>out="shoot_cleared_kept"</tag> <!-- ball cleared -->
 			</item>
 			<item>
 				kurtarılıyor
-				<tag>out="cleared"</tag> <!-- ball kept -->
+				<tag>out="shoot_cleared_kept"</tag> <!-- ball kept -->
 			</item>
 			<item>
 				<tag>out="shot"</tag> <!-- a shot -->
@@ -178,7 +178,7 @@
 		<one-of>
 			<item>
 				aut
-				<tag>out="out"</tag>
+				<tag>out="goalkicking"</tag>
 			</item>
 			<item>
 				faul vuruşunu
@@ -216,12 +216,12 @@
 			<!-- clearing the ball -->
 			<item>
 				<ruleref uri="#clear" /> <!-- any verb that means clearing -->
-				<tag>out="cleared"</tag>
+				<tag>out="clear"</tag>
 			</item>
 			<!-- catching the ball -->
 			<item>
 				yakalıyor
-				<tag>out="cleared"</tag>
+				<tag>out="shoot_cleared_kept"</tag>
 			</item>
 		</one-of>
 	</rule>
@@ -595,6 +595,23 @@
 			<item>Amerika Birleşik Devletlerinden<tag>out="Amerika Birleşik Devletleri"</tag></item>
 			<item>Yugoslavyalı<tag>out="Yugoslavya"</tag></item>
 		</one-of>
+	</rule>
+	
+	<!-- commands to start searching -->
+	<rule id="startsearch" scope="public">
+		<one-of>
+			<item>
+				<item repeat="0-1">
+					<one-of>
+						<item>diyeceklerim</item>
+						<item>söyleyeceklerim</item>
+					</one-of>
+				</item>
+				bu kadar
+			</item>
+			<item>böyle</item>
+		</one-of>
+		<tag>out.start=true</tag>
 	</rule>
 	
 </grammar>

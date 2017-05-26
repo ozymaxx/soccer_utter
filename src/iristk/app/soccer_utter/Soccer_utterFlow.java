@@ -4,6 +4,8 @@ import java.util.List;
 import java.io.File;
 import iristk.xml.XmlMarshaller.XMLLocation;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import iristk.system.Event;
 import iristk.flow.*;
 import iristk.util.Record;
@@ -74,6 +76,10 @@ public class Soccer_utterFlow extends iristk.flow.Flow {
 						// Line: 11
 						int state = Soccer_utterSystem.drawFlow.getState();
 						int side = Soccer_utterSystem.drawFlow.getPlayerSide();
+						
+						if (((Record) event.get("sem")).get("start") != null) {
+							Platform.runLater(new DisplayQuery(Soccer_utterSystem.query.toString()));
+						}
 						
 						switch (state) {
 							case StoryFlow.PLAYER_MARKED:
