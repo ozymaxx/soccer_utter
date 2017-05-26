@@ -5,6 +5,8 @@ This is a multimodal Java application that generates database queries from sketc
 * [Java](http://www.oracle.com/technetwork/java/javase/overview/index.html) with [JavaFX](http://www.oracle.com/technetwork/java/javafx2-archive-download-1939373.html) SDK
 * A drawing surface
 * A microphone
+* [LibSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) for Java
+* [Sketched symbol feature extractor](https://github.com/ozymaxx/sketchfe)
 * [IrisTK](iristk.net)
 * Google Cloud Speech API Account
 * Windows 7 or higher
@@ -17,6 +19,9 @@ This is a multimodal Java application that generates database queries from sketc
 * Type `iristk create simple_dialog soccer_utter` and then `iristk eclipse`.
 * Import the main IrisTK folder (which is where you are on terminal now) to Eclipse.
 * Copy all the files in this repository to `app/soccer_utter` folder in your project.
+* Add LibSVM jar file to path
+* Install sketched symbol feature extractor ([details](https://github.com/ozymaxx/sketchfe))
+* In [this file](https://github.com/ozymaxx/soccer_utter/blob/master/src/iristk/app/soccer_utter/Soccer_utterSystem.java) (main class), at line 83, change the path to the directory containing [these files](https://github.com/ozymaxx/soccer_utter/tree/master/symbol_recognizer) (feature extraction script and SVM model).
 * Click **Run**.
 
 ## Credits
