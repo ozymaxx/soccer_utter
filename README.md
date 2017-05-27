@@ -24,6 +24,9 @@ This is a multimodal Java application that generates database queries from sketc
 * In [this file](https://github.com/ozymaxx/soccer_utter/blob/master/src/iristk/app/soccer_utter/Soccer_utterSystem.java) (main class), at line 83, change the path to the directory containing [these files](https://github.com/ozymaxx/soccer_utter/tree/master/symbol_recognizer) (feature extraction script and SVM model).
 * Click **Run**.
 
+## Sample Usage
+Watch [this video](https://youtu.be/Xq2gooAAcnQ) to understand how to interact with the interface.
+
 ## Credits
 * IrisTK - [iristk.net](iristk.net)
 * Ozan Can Altıok - oaltiok15 at ku dot edu dot tr - [Koç University Intelligent User Interfaces Laboratory](http://iui.ku.edu.tr)
