@@ -108,7 +108,7 @@
 				<tag>out="shoot_cleared_kept"</tag> <!-- ball kept -->
 			</item>
 			<item>
-				<tag>out="shot"</tag> <!-- a shot -->
+				<tag>out="shoot"</tag> <!-- a shoot -->
 				<item repeat="0-1">
 					kafayla
 					<tag>out="heading"</tag> <!-- heading -->
@@ -216,7 +216,7 @@
 			<!-- clearing the ball -->
 			<item>
 				<ruleref uri="#clear" /> <!-- any verb that means clearing -->
-				<tag>out="clear"</tag>
+				<tag>out="shoot_cleared_kept"</tag>
 			</item>
 			<!-- catching the ball -->
 			<item>
