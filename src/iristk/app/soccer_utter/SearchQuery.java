@@ -242,12 +242,13 @@ public class SearchQuery {
 		StringBuilder condition;
 		int startTeamNo;
 		double startx,endx,starty,endy;
+		String semantic;
 		for (int i = 0; i < movements.size(); ++i) {
 			queryBuilder.append("{select:'*',");
 			condition = new StringBuilder();
 			
 			if (movements.get(i) instanceof BallMovement) {
-				condition.append("motion = \"ball\"");
+				condition.append("motion == \"ball\"");
 				startTeamNo = ((BallMovement) movements.get(i)).getStartTeamNo();
 				startx = ((BallMovement) movements.get(i)).getStartPoint().getX();
 				starty = ((BallMovement) movements.get(i)).getStartPoint().getY();
@@ -255,7 +256,7 @@ public class SearchQuery {
 				endy = ((BallMovement) movements.get(i)).getEndPoint().getY();
 			}
 			else {
-				condition.append("motion = \"player\"");
+				condition.append("motion == \"player\"");
 				startTeamNo = ((PlayerMovement) movements.get(i)).getTeamNo();
 				startx = ((PlayerMovement) movements.get(i)).getStartPoint().getX();
 				starty = ((PlayerMovement) movements.get(i)).getStartPoint().getY();
@@ -266,82 +267,90 @@ public class SearchQuery {
 			if (startTeamNo != -1) {
 				if (startTeamNo == 1) {
 					if (sidesCertain) {
-						condition.append(" && team = \"");
+						condition.append(" && team == \"");
 						condition.append(team1Name+"\"");
 					}
 					else {
-						condition.append(" && team = \"");
+						condition.append(" && team == \"");
 						condition.append(team1Name+"\" || ");
-						condition.append("team = \"");
+						condition.append("team == \"");
 						condition.append(team2Name+"\"");
 					}
 				}
 				else {
 					if (sidesCertain) {
-						condition.append(" && team = \"");
+						condition.append(" && team == \"");
 						condition.append(team2Name+"\"");
 					}
 					else {
-						condition.append(" && team = \"");
+						condition.append(" && team == \"");
 						condition.append(team1Name+"\" || ");
-						condition.append("team = \"");
+						condition.append("team == \"");
 						condition.append(team2Name+"\"");
 					}
 				}
 			}
 			
+			semantic = movements.get(i).getAdditionalInfo();
+			
+			if (semantic != null) {
+				condition.append(" && semantic == \""+semantic+"\"");
+			}
+			
 			if (i == 0) {
 				if (time != -1) {
-					condition.append(" && time = ");
+					condition.append(" && time == ");
 					condition.append(time);
 				}
 			}
 			
 			if (sidesCertain) {
 				if (team1Name != null) {
-					condition.append(" && team1 = \"");
+					condition.append(" && team1 == \"");
 					condition.append(team1Name+"\"");
 				}
 				
 				if (team2Name != null) {
-					condition.append(" && team2 = \"");
+					condition.append(" && team2 == \"");
 					condition.append(team2Name+"\"");
 				}
 			}
 			else {
-				condition.append("&& (");
-				
-				if (team1Name != null) {
-					condition.append("team1 = \"");
-					condition.append(team1Name+"\"");
-				}
-				
-				if (team2Name != null) {
+				if (team1Name != null || team2Name != null) {
+					condition.append("&& (");
+					
 					if (team1Name != null) {
-						condition.append(" && ");
+						condition.append("team1 == \"");
+						condition.append(team1Name+"\"");
 					}
 					
-					condition.append("team2 = \"");
-					condition.append(team2Name+"\"");
-				}
-				
-				condition.append(") || (");
-				
-				if (team1Name != null) {
-					condition.append("team2 = \"");
-					condition.append(team1Name+"\"");
-				}
-				
-				if (team2Name != null) {
-					if (team1Name != null) {
-						condition.append(" && ");
+					if (team2Name != null) {
+						if (team1Name != null) {
+							condition.append(" && ");
+						}
+						
+						condition.append("team2 == \"");
+						condition.append(team2Name+"\"");
 					}
 					
-					condition.append("team1 = \"");
-					condition.append(team2Name+"\"");
+					condition.append(") || (");
+					
+					if (team1Name != null) {
+						condition.append("team2 == \"");
+						condition.append(team1Name+"\"");
+					}
+					
+					if (team2Name != null) {
+						if (team1Name != null) {
+							condition.append(" && ");
+						}
+						
+						condition.append("team1 == \"");
+						condition.append(team2Name+"\"");
+					}
+					
+					condition.append(")");
 				}
-				
-				condition.append(")");
 			}
 			
 			queryBuilder.append("condition:'");

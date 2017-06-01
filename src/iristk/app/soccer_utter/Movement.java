@@ -9,5 +9,9 @@ public abstract class Movement {
 		this.additionalInfo = info;
 	}
 	
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
+	
 	public abstract String toString();
 }
