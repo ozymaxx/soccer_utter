@@ -237,7 +237,7 @@ public class SearchQuery {
 		
 		queryBuilder.append(")");*/
 		
-		queryBuilder.append("{");
+		queryBuilder.append("[");
 		
 		StringBuilder condition;
 		int startTeamNo;
@@ -364,7 +364,7 @@ public class SearchQuery {
 			}
 		}
 		
-		queryBuilder.append("}");
+		queryBuilder.append("]");
 		
 		return queryBuilder.toString();
 	}
