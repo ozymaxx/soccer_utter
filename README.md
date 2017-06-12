@@ -25,7 +25,7 @@ This is a multimodal Java application that generates database queries from sketc
 * Click **Run**.
 
 ## Sample Usage
-Watch [this video](https://youtu.be/Xq2gooAAcnQ) to understand how to interact with the interface.
+Watch [this video](https://youtu.be/uqw0i1YFqz4) to understand how to interact with the interface.
 
 ## Credits
 * IrisTK - [iristk.net](iristk.net)
