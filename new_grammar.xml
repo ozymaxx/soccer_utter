@@ -502,63 +502,21 @@
 	<!-- player marking -->
 	<rule id="playermarking" scope="public">
 		<tag>out.team="";out.pltype=""</tag>
-		<one-of>
-			<!-- by team name/color -->
-			<item>
-				<one-of>
-					<item><ruleref uri="#team" /><tag>out.team=rules.team</tag></item>
-					<item><ruleref uri="#coloradj" /><tag>out.team=rules.coloradj</tag></item>
-				</one-of>
-				<ruleref uri="#playertype" /> <!-- player type -->
-				<tag>out.pltype=rules.playertype</tag>
-			</item>
-			<!-- with "color" -->
-			<item>
-				<ruleref uri="#color" />
-				<ruleref uri="#playertype" /> <!-- player type -->
-				<tag>out.team=rules.color;out.pltype=rules.playertype</tag>
-			</item>
-			<!-- "color"s -->
-			<item>
-				<ruleref uri="#color" />
-				ler
-				<tag>out.team=rules.color</tag>
-			</item>
-		</one-of>
+		<!-- by team name -->
+		<item>
+			<item><ruleref uri="#team" /><tag>out.team=rules.team</tag></item>
+			<ruleref uri="#playertype" /> <!-- player type -->
+			<tag>out.pltype=rules.playertype</tag>
+		</item>
 	</rule>
 	
-	<!-- player type, an ordinary player, goalkeeper or defense -->
+	<!-- player type, an ordinary player, goalkeeper, defense or attacker -->
 	<rule id="playertype">
 		<one-of>
 			<item>oyuncu<tag>out="player"</tag></item> <!-- an ordinary player -->
 			<item>kaleci<tag>out="goalkeeper"</tag></item> <!-- a goalkeeper -->
 			<item>defans<tag>out="defense"</tag></item> <!-- a defense player -->
-		</one-of>
-	</rule>
-
-	<!-- colors possible -->
-	<rule id="color">
-		<one-of>
-			<item>kırmızı<tag>out="red"</tag></item>
-			<item>mavi<tag>out="blue"</tag></item>
-			<item>sarı<tag>out="yellow"</tag></item>
-			<item>yeşil<tag>out="green"</tag></item>
-			<item>beyaz<tag>out="white"</tag></item>
-			<item>turuncu<tag>out="orange"</tag></item>
-			<item>siyah<tag>out="black"</tag></item>
-		</one-of>
-	</rule>
-
-	<!-- with "color", where "color" refers the same colors as above -->
-	<rule id="coloradj">
-		<one-of>
-			<item>kırmızılı<tag>out="red"</tag></item>
-			<item>mavili<tag>out="blue"</tag></item>
-			<item>sarılı<tag>out="yellow"</tag></item>
-			<item>yeşilli<tag>out="green"</tag></item>
-			<item>beyazlı<tag>out="beyaz"</tag></item>
-			<item>turunculu<tag>out="orange"</tag></item>
-			<item>siyahlı<tag>out="black"</tag></item>
+			<item>forvet<tag>out="attacker"</tag></item> <!-- an attacker -->
 		</one-of>
 	</rule>
 
