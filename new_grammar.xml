@@ -299,7 +299,6 @@
 			<item>İspanya</item>
 			<item>Tunus</item>
 			<item>Amerika Birleşik Devletleri</item>
-			<item>Yugoslavya</item>
 		</one-of>
 	</rule>
 	
@@ -551,7 +550,6 @@
 			<item>İspanyalı<tag>out="İspanya"</tag></item>
 			<item>Tunuslu<tag>out="Tunus"</tag></item>
 			<item>Amerika Birleşik Devletlerinden<tag>out="Amerika Birleşik Devletleri"</tag></item>
-			<item>Yugoslavyalı<tag>out="Yugoslavya"</tag></item>
 		</one-of>
 	</rule>
 	
